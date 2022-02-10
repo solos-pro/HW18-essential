@@ -6,14 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 import raw_data
 
 
-class Config(object):
-    DEBUG = True
-    SECRET_HERE = 'text'
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    # DEBUG = True
+    # SECRET_HERE = 'text'
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    # SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class Director(db.Model):
