@@ -5,12 +5,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import raw_data
 
-
-    # DEBUG = True
-    # SECRET_HERE = 'text'
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    # SQLALCHEMY_TRACK_MODIFICATIONS = True
-
+from dao.model.director import Director
+from dao.model.genre import Genre
+from dao.model.movie import Movie
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
