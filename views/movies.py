@@ -1,9 +1,10 @@
 from flask import request
 from flask_restx import Resource, Namespace
 from config_db import db
-
+from dao.model.movie import MovieSchema, Movie
 
 movie_ns = Namespace('movie')
+movie_schema = MovieSchema()
 
 
 @movie_ns.route('/')

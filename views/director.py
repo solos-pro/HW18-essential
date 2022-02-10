@@ -1,9 +1,10 @@
 from flask import request
 from flask_restx import Resource, Namespace
 from config_db import db
-
+from dao.model.director import DirectorSchema, Director
 
 director_ns = Namespace('director')
+director_schema = DirectorSchema()
 
 
 @director_ns.route('/')
@@ -14,7 +15,7 @@ class DirectorsView(Resource):
         if director_name is not None:
             res = res.filter(Director.name == director_name)
         result = res.all()
-        return direct_schema.dump(result, many=True), 200
+        return director_schema.dump(result, many=True), 200
 
     def post(self):
         r_json = request.json
@@ -30,7 +31,7 @@ class DirectorView(Resource):
         director = Director.query.get(uid)
         if not director:
             return "", 404
-        return direct_schema.dump(director)
+        return director_schema.dump(director)
 
     def put(self, uid):
         director = Director.query.get(uid)
