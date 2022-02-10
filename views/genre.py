@@ -1,3 +1,11 @@
+from flask import request
+from flask_restx import Resource, Namespace
+from config_db import db
+
+
+genre_ns = Namespace('genres')
+
+
 @genre_ns.route('/')
 class GenresView(Resource):
     def get(self):

@@ -1,3 +1,11 @@
+from flask import request
+from flask_restx import Resource, Namespace
+from config_db import db
+
+
+movie_ns = Namespace('movie')
+
+
 @movie_ns.route('/')
 class MoviesView(Resource):
     def get(self):

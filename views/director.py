@@ -1,3 +1,11 @@
+from flask import request
+from flask_restx import Resource, Namespace
+from config_db import db
+
+
+director_ns = Namespace('director')
+
+
 @director_ns.route('/')
 class DirectorsView(Resource):
     def get(self):
