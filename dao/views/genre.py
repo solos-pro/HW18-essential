@@ -1,6 +1,6 @@
 from flask import request
 from flask_restx import Resource, Namespace
-from config_db import db
+from app.database import db
 from dao.model.genre import GenreSchema, Genre
 
 genre_ns = Namespace('genres')
@@ -50,3 +50,21 @@ class GenreView(Resource):
         db.session.delete(genre)
         db.session.commit()
         return "", 204
+
+"""
+# здесь контроллеры/хендлеры/представления для обработки запросов (flask ручки). сюда импортируются сервисы из пакета service
+
+# Пример
+# from flask_restx import Resource, Namespace
+#
+# book_ns = Namespace('books')
+#
+#
+# @book_ns.route('/')
+# class BooksView(Resource):
+#     def get(self):
+#         return "", 200
+#
+#     def post(self):
+#         return "", 201
+"""

@@ -1,7 +1,9 @@
 from flask import request
 from flask_restx import Resource, Namespace
-from config_db import db
+from create_db import db
 from dao.model.movie import MovieSchema, Movie
+from dao.model.genre import Genre
+from dao.model.director import Director
 
 movie_ns = Namespace('movie')
 movie_schema = MovieSchema()

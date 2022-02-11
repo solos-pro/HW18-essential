@@ -1,6 +1,6 @@
 from flask import request
 from flask_restx import Resource, Namespace
-from config_db import db
+from create_db import db
 from dao.model.director import DirectorSchema, Director
 
 director_ns = Namespace('director')
