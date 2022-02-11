@@ -1,7 +1,7 @@
 from flask import request
 from flask_restx import Resource, Namespace
 from app.database import db
-from dao.model.genre import GenreSchema, Genre
+from app.dao.model.genre import GenreSchema, Genre
 
 genre_ns = Namespace('genres')
 genre_schema = GenreSchema()
@@ -10,18 +10,12 @@ genre_schema = GenreSchema()
 @genre_ns.route('/')
 class GenresView(Resource):
     def get(self):
-        genre_id = request.args.get('name')
-        res = Genre.query
-        if genre_id is not None:
-            res = res.filter(Genre.id == genre_id)
-        result = res.all()
-        return genre_schema.dump(result, many=True), 200
+        all_genres = genre_dao.get_all()
+        return genre_schema.dump(all_genres, many=True), 200
 
     def post(self):
         r_json = request.json
-        add_genre = Genre(**r_json)
-        with db.session.begin():
-            db.session.add(add_genre)
+        genre_dao.create(r_json)
         return "", 201
 
 

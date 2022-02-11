@@ -3,11 +3,10 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import raw_data
 
-from dao.model.director import Director
-from dao.model.genre import Genre
-from dao.model.movie import Movie
+from app.dao.model.director import Director
+from app.dao.model.genre import Genre
+from app.dao.model.movie import Movie
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'

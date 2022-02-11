@@ -2,12 +2,10 @@ from flask import Flask
 from app.config import Config
 from flask_restx import Api
 from app.database import db
-import raw_data
-from create_db import create_data
 
-from dao.views.genre import genre_ns
-from dao.views.director import director_ns
-from dao.views.movies import movie_ns
+from app.dao.views.genre import genre_ns
+from app.dao.views.director import director_ns
+from app.dao.views.movies import movie_ns
 
 
 def configure_app(application: Flask):
