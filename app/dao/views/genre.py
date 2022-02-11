@@ -21,28 +21,31 @@ class GenresView(Resource):
 
 @genre_ns.route('/<int:uid>')
 class GenreView(Resource):
-    def get(self, uid):
-        genre = Genre.query.get(uid)
+    def get(self, gid):
+        genre = genre_dao.get_one(gid)
         if not genre:
             return "", 404
         return genre_schema.dump(genre)
 
-    def put(self, uid):
-        genre = Genre.query.get(uid)
-        if not genre:
-            return "", 404
+    def put(self, gid):
+        reg_json = request.json
+        reg_json["id"] = gid
 
-        genre.name = request.json.get("name")
-        db.session.add(genre)
-        db.session.commit()
+        genre_dao.get_update(reg_json)
+
         return "", 204
 
-    def delete(self, uid):
-        genre = Genre.query.get(uid)
-        if not genre:
-            return "", 404
-        db.session.delete(genre)
-        db.session.commit()
+    def patch(self, gid):
+        reg_json = request.json
+        reg_json["id"] = gid
+
+        genre_dao.update_partial(reg_json)
+
+        return "", 204
+
+    def delete(self, gid):
+        genre_dao.delete(gid)
+
         return "", 204
 
 """
