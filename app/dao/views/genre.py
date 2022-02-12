@@ -1,5 +1,7 @@
 from flask import request
 from flask_restx import Resource, Namespace
+
+from app.container import genre_service
 from app.database import db
 from app.dao.model.genre import GenreSchema, Genre
 
@@ -10,19 +12,19 @@ genre_schema = GenreSchema()
 @genre_ns.route('/')
 class GenresView(Resource):
     def get(self):
-        all_genres = genre_dao.get_all()
+        all_genres = genre_service.get_all()
         return genre_schema.dump(all_genres, many=True), 200
 
     def post(self):
         r_json = request.json
-        genre_dao.create(r_json)
+        genre_service.create(r_json)
         return "", 201
 
 
 @genre_ns.route('/<int:uid>')
 class GenreView(Resource):
     def get(self, gid):
-        genre = genre_dao.get_one(gid)
+        genre = genre_service.get_one(gid)
         if not genre:
             return "", 404
         return genre_schema.dump(genre)
@@ -31,7 +33,7 @@ class GenreView(Resource):
         reg_json = request.json
         reg_json["id"] = gid
 
-        genre_dao.get_update(reg_json)
+        genre_service.get_update(reg_json)
 
         return "", 204
 
@@ -39,12 +41,12 @@ class GenreView(Resource):
         reg_json = request.json
         reg_json["id"] = gid
 
-        genre_dao.update_partial(reg_json)
+        genre_service.update_partial(reg_json)
 
         return "", 204
 
     def delete(self, gid):
-        genre_dao.delete(gid)
+        genre_service.delete(gid)
 
         return "", 204
 
