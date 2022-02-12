@@ -12,17 +12,8 @@ movie_schema = MovieSchema()
 @movie_ns.route('/')
 class MoviesView(Resource):
     def get(self):
-        director_id = request.args.get('director_id')
-        genre_id = request.args.get('genre_id')
-        res = db.session.query(Movie.id, Movie.title, Genre.name).join(Genre).join(Director)
-        if director_id is not None:
-            res = res.filter(Movie.director_id == director_id)
-        if genre_id is not None:
-            res = res.filter(Movie.genre_id == genre_id)
-        if genre_id is not None and director_id is not None:
-            res = res.filter(Movie.genre_id == genre_id, Movie.director_id == director_id)
-        result = res.all()
-
+        search_request = {"director_id": request.args.get('director_id'), "genre_id": request.args.get('genre_id')}
+        result = movie_service.search(search_request)
         return movie_schema.dump(result, many=True), 200
 
     def post(self):

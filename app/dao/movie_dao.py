@@ -15,6 +15,18 @@ class MovieDAO:
         self.session.refresh(movie)
         return movie.id
 
+    def search_artist_genre(self, search_request):
+        # print(search_request)
+        # print(int(search_request["director_id"]))
+
+        # return self.session.query(Movie).filter(Movie.director_id == int(search_request["director_id"])).all()
+
+        """"""
+        return self.session.query(Movie.id, Movie.title, Movie.year,
+                                  Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
+                                  Director.name.label("director")).join(Genre).join(Director).filter(Movie.director_id == search_request["director_id"],
+                                                                                                     Movie.genre_id == search_request["genre_id"]).all()
+
     def get_one(self, mid):
         return self.session.query(Movie.id, Movie.title, Movie.description, Movie.trailer, Movie.year, Movie.rating,
                                   Movie.director_id, Genre.name.label("genre"),

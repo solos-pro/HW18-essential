@@ -26,3 +26,18 @@ class MovieSchema(Schema):
     trailer = fields.Str()
     year = fields.Int()
     rating = fields.Float()
+
+
+class MovieSchema_search(Schema):
+    id = fields.Int()
+    title = fields.Str()
+    name = fields.Str()
+    genre = fields.Str()
+    director = fields.Str()
+    description = fields.Str()
+    trailer = fields.Str()
+    year = fields.Int()
+    rating = fields.Float()
+    genre_id = fields.Int()
+    director_id = fields.Int()
+

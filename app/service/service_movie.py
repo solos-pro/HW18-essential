@@ -5,6 +5,11 @@ class MovieService:
     def __init__(self, dao: MovieDAO):
         self.dao = dao
 
+    def search(self, search_request):
+        if search_request["director_id"] is not None and search_request["genre_id"] is not None:
+            return self.dao.search_artist_genre(search_request)
+
+
     def get_one(self, mid):
         return self.dao.get_one(mid)
 
@@ -59,38 +64,6 @@ class MovieService:
     def delete(self, mid):
         self.dao.delete(mid)
 """
-
-class GenreService:
-    def __init__(self, dao: GenreDAO):
-        self.dao = dao
-
-    def get_one(self, gid):
-        return self.dao.get_one(gid)
-
-    def get_all(self):
-        return self.dao.get_all()
-
-    def create(self, data):
-        return self.dao.create(data)
-
-    def get_update(self, data):
-        gid = data.get("id")
-        genre = self.get_one(gid)
-
-        genre.name = data.get("name")
-
-        self.dao.db_update(genre)
-
-    def update_partial(self, data):
-        gid = data.get("id")
-        genre = self.get_one(gid)
-
-        if "name" in data:
-            genre.name = data.get("name")
-        self.dao.db_update(genre)
-
-    def delete(self, gid):
-        self.dao.delete(gid)
 """
 
 
