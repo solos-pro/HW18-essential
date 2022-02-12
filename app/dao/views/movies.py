@@ -1,11 +1,12 @@
 from flask import request
 from flask_restx import Resource, Namespace
-from create_db import db
+# from app.database import db
 from app.dao.model.movie import MovieSchema, Movie
 from app.dao.model.genre import Genre
 from app.dao.model.director import Director
+from app.container import movie_service
 
-movie_ns = Namespace('movie')
+movie_ns = Namespace('movies')
 movie_schema = MovieSchema()
 
 
@@ -27,42 +28,28 @@ class MoviesView(Resource):
 
     def post(self):
         r_json = request.json
-        add_movie = Movie(**r_json)
-        with db.session.begin():
-            db.session.add(add_movie)
+        movie_service.create(r_json)
         return "", 201
 
 
-@movie_ns.route('/<int:uid>')
+@movie_ns.route('/<int:mid>')
 class MovieView(Resource):
-    def get(self, uid):
-        movie = db.session.query(Movie.id, Movie.title, Movie.description, Movie.trailer, Movie.year, Movie.rating,
-                                 Movie.director_id, Genre.name.label("genre"),
-                                 Director.name.label("director")).join(Genre).join(Director).filter(Movie.id == uid).all()
-        if not movie:
-            return "", 404
+    def get(self, mid):
+        movie = movie_service.get_one(mid)
         return movie_schema.dump(movie, many=True)
 
-    def put(self, uid):
-        movie = Movie.query.get(uid)
-        if not movie:
-            return "", 404
-
-        movie.title = request.json.get("title")
-        movie.description = request.json.get("description")
-        movie.trailer = request.json.get("trailer")
-        movie.year = request.json.get("year")
-        movie.rating = request.json.get("rating")
-        movie.genre = request.json.get("genre_id")
-        movie.director_id = request.json.get("director_id")
-        db.session.add(movie)
-        db.session.commit()
+    def put(self, mid):
+        reg_json = request.json
+        reg_json["id"] = mid
+        movie_service.update(reg_json)
         return "", 204
 
-    def delete(self, uid):
-        movie = Movie.query.get(uid)
-        if not movie:
-            return "", 404
-        db.session.delete(movie)
-        db.session.commit()
+    def patch(self, mid):
+        reg_json = request.json
+        reg_json["id"] = mid
+        movie_service.update_partial(reg_json)
+        return "", 204
+
+    def delete(self, mid: int):
+        movie_service.delete(mid)
         return "", 204
