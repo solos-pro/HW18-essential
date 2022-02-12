@@ -22,8 +22,8 @@ class DirectorDAO:
         director = Director(**data)
         return self.db_update(director)
 
-    def delete(self, id):
-        director = self.get_one(id)
+    def delete(self, did):
+        director = self.get_one(did)
         self.db_update(director)
 
 
