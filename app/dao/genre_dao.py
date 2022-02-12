@@ -24,7 +24,8 @@ class GenreDAO:
 
     def delete(self, gid):
         genre = self.get_one(gid)
-        self.db_update(genre)
+        self.session.delete(genre)
+        self.session.commit()
 
 
 """

@@ -24,7 +24,9 @@ class DirectorDAO:
 
     def delete(self, did):
         director = self.get_one(did)
-        self.db_update(director)
+        self.session.delete(director)
+        self.session.commit() 
+        # self.db_update(director)
 
 
 """
