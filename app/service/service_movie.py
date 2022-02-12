@@ -7,8 +7,13 @@ class MovieService:
 
     def search(self, search_request):
         if search_request["director_id"] is not None and search_request["genre_id"] is not None:
-            return self.dao.search_artist_genre(search_request)
-
+            return self.dao.search_director_genre(search_request)
+        elif search_request["director_id"] is not None:
+            return self.dao.search_director(search_request)
+        elif search_request["genre_id"] is not None:
+            return self.dao.search_genre(search_request)
+        else:
+            return self.dao.get_all()
 
     def get_one(self, mid):
         return self.dao.get_one(mid)
