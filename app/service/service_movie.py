@@ -16,7 +16,7 @@ class MovieService:
 
     def update(self, data):
         mid = data.get("id")
-        movie = self.dao.get_one(mid)
+        movie = self.dao.get_original(mid)
         print(movie)
 
         movie.title = data.get("title")
@@ -33,7 +33,7 @@ class MovieService:
 
     def update_partial(self, data):
         mid = data.get("id")
-        movie = self.get_one(mid)
+        movie = self.dao.get_original(mid)
 
         if "title" in data:
             movie.title = data.get("title")

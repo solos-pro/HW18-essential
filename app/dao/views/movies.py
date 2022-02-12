@@ -1,6 +1,5 @@
 from flask import request
 from flask_restx import Resource, Namespace
-# from app.database import db
 from app.dao.model.movie import MovieSchema, Movie
 from app.dao.model.genre import Genre
 from app.dao.model.director import Director

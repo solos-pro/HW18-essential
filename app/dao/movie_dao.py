@@ -20,6 +20,9 @@ class MovieDAO:
                                   Movie.director_id, Genre.name.label("genre"),
                                   Director.name.label("director")).join(Genre).join(Director).filter(Movie.id == mid).all()
 
+    def get_original(self, mid):
+        return self.session.query(Movie).get(mid)
+
     def get_all(self):
         return self.session.query(Movie).all()
 
@@ -28,7 +31,7 @@ class MovieDAO:
         return self.update(movie)
 
     def delete(self, mid):
-        movie = self.get_one(mid)
+        movie = self.get_original(mid)
         self.session.delete(movie)
         self.session.commit()
 
