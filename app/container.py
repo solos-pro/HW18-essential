@@ -1,6 +1,7 @@
 from app.dao.director_dao import DirectorDAO
 from app.dao.genre_dao import GenreDAO
 from app.database import db
+from app.service.service_director import DirectorService
 from app.service.service_genre import GenreService
 
 # movie_dao = MovieDAO(db.session)

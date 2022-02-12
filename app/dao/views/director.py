@@ -1,52 +1,49 @@
 from flask import request
 from flask_restx import Resource, Namespace
-from app.database import db
-from app.dao.model.director import DirectorSchema, Director
 
-director_ns = Namespace('director')
+from app.container import director_service
+from app.dao.model.director import DirectorSchema
+
+director_ns = Namespace('directors')
 director_schema = DirectorSchema()
 
 
 @director_ns.route('/')
 class DirectorsView(Resource):
     def get(self):
-        director_name = request.args.get('name')
-        res = Director.query
-        if director_name is not None:
-            res = res.filter(Director.name == director_name)
-        result = res.all()
-        return director_schema.dump(result, many=True), 200
+        all_directors = director_service.get_all()
+        return director_schema.dump(all_directors, many=True), 200
 
     def post(self):
         r_json = request.json
-        add_director = Director(**r_json)
-        with db.session.begin():
-            db.session.add(add_director)
+        director_service.create(r_json)
         return "", 201
 
 
-@director_ns.route('/<int:uid>')
+@director_ns.route('/<int:did>')
 class DirectorView(Resource):
-    def get(self, uid):
-        director = Director.query.get(uid)
+    def get(self, did):
+        director = director_service.get_one(did)
         if not director:
             return "", 404
         return director_schema.dump(director)
 
-    def put(self, uid):
-        director = Director.query.get(uid)
-        if not director:
-            return "", 404
+    def put(self, did):
+        reg_json = request.json
+        reg_json["id"] = did
 
-        director.name = request.json.get("name")
-        db.session.add(director)
-        db.session.commit()
+        director_service.get_update(reg_json)
         return "", 204
 
-    def delete(self, uid):
-        director = Director.query.get(uid)
-        if not director:
-            return "", 404
-        db.session.delete(director)
-        db.session.commit()
+    def patch(self, did):
+        reg_json = request.json
+        reg_json["id"] = did
+
+        director_service.update_partial(reg_json)
+
+        return "", 204
+
+    def delete(self, did):
+        director_service.delete(did)
+
         return "", 204
