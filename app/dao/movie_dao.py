@@ -1,6 +1,8 @@
 from app.dao.model.movie import Movie
 from app.dao.model.genre import Genre
 from app.dao.model.director import Director
+
+
 # from app.database import db
 # from sqlalchemy import label
 
@@ -10,12 +12,15 @@ class MovieDAO:
         self.session = session
 
     def search(self, search_request):
-        res = self.get_all()
+        if search_request["director_id"] is not None and search_request["genre_id"] is not None:
+            return self.session.query(Movie).filter(Movie.director_id == search_request["director_id"],
+                                                    Movie.genre_id == search_request["genre_id"]).all()
         if search_request["director_id"] is not None:
-            res = res.filter(Movie.director_id == search_request["director_id"])
+            return self.session.query(Movie).filter(Movie.director_id == search_request["director_id"]).all()
         if search_request["genre_id"] is not None:
-            res = res.filter(Movie.genre_id == search_request["genre_id"])
-        return res
+            return self.session.query(Movie).filter(Movie.director_id == search_request["genre_id"]).all()
+        else:
+            return self.get_all()
 
     def update(self, movie):
         self.session.add(movie)
