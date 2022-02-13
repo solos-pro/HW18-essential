@@ -9,32 +9,40 @@ class MovieDAO:
     def __init__(self, session):
         self.session = session
 
+    def search(self, search_request):
+        res = self.get_all()
+        if search_request["director_id"] is not None:
+            res = res.filter(Movie.director_id == search_request["director_id"])
+        if search_request["genre_id"] is not None:
+            res = res.filter(Movie.genre_id == search_request["genre_id"])
+        return res
+
     def update(self, movie):
         self.session.add(movie)
         self.session.commit()
         self.session.refresh(movie)
         return movie.id
 
-    def search_director_genre(self, search_request):
-        return self.session.query(Movie.id, Movie.title, Movie.year,
-                                  Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
-                                  Director.name.label("director")).join(Genre).join(Director).filter(Movie.director_id == search_request["director_id"],
-                                                                                                     Movie.genre_id == search_request["genre_id"]).all()
-
-    def search_director(self, search_request):
-        return self.session.query(Movie.id, Movie.title, Movie.year,
-                                  Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
-                                  Director.name.label("director")).join(Genre).join(Director).filter(Movie.director_id == search_request["director_id"]).all()
-
-    def search_genre(self, search_request):
-        return self.session.query(Movie.id, Movie.title, Movie.year,
-                                  Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
-                                  Director.name.label("director")).join(Genre).join(Director).filter(Movie.genre_id == search_request["genre_id"]).all()
-
-    def get_one(self, mid):
-        return self.session.query(Movie.id, Movie.title, Movie.description, Movie.trailer, Movie.year, Movie.rating,
-                                  Movie.director_id, Genre.name.label("genre"),
-                                  Director.name.label("director")).join(Genre).join(Director).filter(Movie.id == mid).all()
+    # def search_director_genre(self, search_request):
+    #     return self.session.query(Movie.id, Movie.title, Movie.year,
+    #                               Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
+    #                               Director.name.label("director")).join(Genre).join(Director).filter(Movie.director_id == search_request["director_id"],
+    #                                                                                                  Movie.genre_id == search_request["genre_id"]).all()
+    #
+    # def search_director(self, search_request):
+    #     return self.session.query(Movie.id, Movie.title, Movie.year,
+    #                               Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
+    #                               Director.name.label("director")).join(Genre).join(Director).filter(Movie.director_id == search_request["director_id"]).all()
+    #
+    # def search_genre(self, search_request):
+    #     return self.session.query(Movie.id, Movie.title, Movie.year,
+    #                               Movie.director_id, Genre.name.label("genre"), Movie.genre_id,
+    #                               Director.name.label("director")).join(Genre).join(Director).filter(Movie.genre_id == search_request["genre_id"]).all()
+    #
+    # def get_one(self, mid):
+    #     return self.session.query(Movie.id, Movie.title, Movie.description, Movie.trailer, Movie.year, Movie.rating,
+    #                               Movie.director_id, Genre.name.label("genre"),
+    #                               Director.name.label("director")).join(Genre).join(Director).filter(Movie.id == mid).all()
 
     def get_original(self, mid):
         return self.session.query(Movie).get(mid)

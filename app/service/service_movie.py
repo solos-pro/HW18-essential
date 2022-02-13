@@ -1,4 +1,5 @@
 from app.dao.movie_dao import MovieDAO
+from app.dao.model.movie import Movie
 
 
 class MovieService:
@@ -6,14 +7,7 @@ class MovieService:
         self.dao = dao
 
     def search(self, search_request):
-        if search_request["director_id"] is not None and search_request["genre_id"] is not None:
-            return self.dao.search_director_genre(search_request)
-        elif search_request["director_id"] is not None:
-            return self.dao.search_director(search_request)
-        elif search_request["genre_id"] is not None:
-            return self.dao.search_genre(search_request)
-        else:
-            return self.dao.get_all()
+        return self.dao.search(search_request)
 
     def get_one(self, mid):
         return self.dao.get_one(mid)

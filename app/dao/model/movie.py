@@ -28,14 +28,9 @@ class MovieSchema(Schema):
     rating = fields.Float()
 
 
-class MovieSchema_search(Schema):
+class MovieSchemaSearch(Schema):
     id = fields.Int()
     title = fields.Str()
-    name = fields.Str()
-    genre = fields.Str()
-    director = fields.Str()
-    description = fields.Str()
-    trailer = fields.Str()
     year = fields.Int()
     rating = fields.Float()
     genre_id = fields.Int()
