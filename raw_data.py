@@ -198,3 +198,19 @@ genres = [
     {"name": "Короткометражка", "pk": 10}, {"name": "Ужасы", "pk": 11}, {"name": "Боевик", "pk": 12},
     {"name": "Мелодрама", "pk": 13}, {"name": "Детектив", "pk": 14}, {"name": "Авторское кино", "pk": 15},
     {"name": "Мультфильм", "pk": 16}, {"name": "Вестерн", "pk": 17}, {"name": "Мюзикл", "pk": 18}]
+
+users = [
+    {"username": "vasya", "password": "my_little_pony", "role_id": "2"},
+    {"username": "oleg", "password": "qwerty", "role_id": "2"},
+    {"username": "oleg", "password": "ssw0rd", "role_id": "1"}
+]
+
+roles = [
+    {"role": "admin"},
+    {"role": "user"}
+]
+'''
+u1 = User(username="vasya", password="my_little_pony", role="user")
+u2 = User(username="oleg", password="qwerty", role="user")
+u3 = User(username="oleg", password="P@ssw0rd", role="admin")
+'''

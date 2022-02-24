@@ -41,8 +41,41 @@ class Movie(db.Model):
     director = db.relationship('Director')
 
 
+class Group(db.Model):
+    __tablename__ = 'group'
+    id = db.Column(db.Integer, primary_key=True)
+    role = db.Column(db.String(20), unique=True)
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=False)
+    password = db.Column(db.String(50))
+    role_id = db.Column(db.Integer, db.ForeignKey("group.id"))
+    role = db.relationship("Group")
+
+
 db.drop_all()
 db.create_all()
+
+for role in raw_data.roles:
+    data = Group(
+        role=role["role"]
+    )
+
+    with db.session.begin():
+        db.session.add(data)
+
+for user in raw_data.users:
+    data = User(
+        username=user["username"],
+        password=user["password"],
+        role_id=user["role_id"]
+    )
+
+    with db.session.begin():
+        db.session.add(data)
 
 
 for director in raw_data.directors:
@@ -77,4 +110,30 @@ for movie in raw_data.movies:
     with db.session.begin():
         db.session.add(m)
 
-# exit()
+
+
+# u1 = User(username="vasya", password="my_little_pony", role="user")
+# u2 = User(username="oleg", password="qwerty", role="user")
+# u3 = User(username="oleg", password="P@ssw0rd", role="admin")
+#
+# with db.session.begin():
+#     db.session.add(u1)
+
+
+
+# with db.session.begin():
+#     db.session.add_all([u1, u2, u3])
+
+
+# def create_data(app, db):
+#     with app.app_context():
+#         db.create_all()
+#
+#         u1 = User(username="vasya", password="my_little_pony", role="user")
+#         u2 = User(username="oleg", password="qwerty", role="user")
+#         u3 = User(username="oleg", password="P@ssw0rd", role="admin")
+#
+#         with db.session.begin():
+#             db.session.add_all([u1, u2, u3])
+
+exit()
