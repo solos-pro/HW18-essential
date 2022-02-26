@@ -21,7 +21,6 @@ class MovieService:
     def update(self, data):
         mid = data.get("id")
         movie = self.dao.get_original(mid)
-        print(movie)
 
         movie.title = data.get("title")
         movie.description = data.get("description")

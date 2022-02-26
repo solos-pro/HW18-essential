@@ -9,7 +9,7 @@ class GenreDAO:
     def db_update(self, genre):
         self.session.add(genre)
         self.session.commit()
-        self.session.refresh(genre)
+        self.session.refresh(genre)         # ?
         return genre.id
 
     def get_one(self, gid):
