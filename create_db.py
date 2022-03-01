@@ -1,8 +1,11 @@
 # Это файл конфигурации приложения, здесь может храниться путь к БД, ключ шифрования, что-то еще.
 # Чтобы добавить новую настройку, допишите ее в класс.
+import base64
+import hashlib
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from constants import PWD_HASH_ALGO, PWD_HASH_SALT, PWD_HASH_ITERATIONS, SECRET
 
 # from app.dao.model.director import Director
 # from app.dao.model.genre import Genre
@@ -59,6 +62,30 @@ class User(db.Model):
 db.drop_all()
 db.create_all()
 
+
+def get_hash(password):
+    result = hashlib.pbkdf2_hmac(
+        PWD_HASH_ALGO,
+        password.encode('utf-8'),
+        PWD_HASH_SALT,
+        PWD_HASH_ITERATIONS
+    )
+    return base64.b64encode(result)
+
+
+# def get_hash1():
+#     password_and_name = "".join(['vasya', 'my_little_pony'])
+#     result = hashlib.pbkdf2_hmac(
+#         PWD_HASH_ALGO,
+#         password_and_name.encode('utf-8'),
+#         PWD_HASH_SALT,
+#         PWD_HASH_ITERATIONS
+#     )
+#     return base64.b64encode(result)
+#
+#
+# get_hash1()
+
 for role in raw_data.roles:
     data = Group(
         role=role["role"]
@@ -68,10 +95,13 @@ for role in raw_data.roles:
         db.session.add(data)
 
 for user in raw_data.users:
+    password_and_name = "".join([user["username"], user["password"]]),
+
+    print(password_and_name)
     data = User(
         username=user["username"],
-        password=user["password"],
-        role_id=user["role_id"]
+        role_id=user["role_id"],
+        password=get_hash(user["password"])
     )
 
     with db.session.begin():
