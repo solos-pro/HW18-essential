@@ -14,11 +14,22 @@ class UserService:
         self.dao = dao
 
     def validate_jwt_generate(self, r_json):
-        user = {
-            "username": r_json.get("username"),
-            "password": r_json.get("password")
-        }
-        request_pass = hash_str_encode(hash_encode(user))   # TODO: Hash from (pass & name)
+        password_and_name = "".join([r_json.get("username"), r_json.get("password")])
+
+        requested_pass = hash_str_encode(hash_encode(password_and_name))   #  Hash from (pass & name)
+        '''Getting hash and then encoding to get the same string as in the bd'''
+
+        user = self.dao.get_one(requested_pass)
+        if user is None:
+            return abort(400)
+
+        return generate_jwt(user)
+
+
+
+
+
+
 
     def search(self, user):
         return self.dao.get_one(user)
@@ -97,13 +108,6 @@ def auth_required(func):
     return wrapper
 
 
-def compare_passwords(password_hash, other_password):
-    return hmac.compare_digest(
-        password_hash,
-        hashlib.pbkdf2_hmac(PWD_HASH_ALGO, other_password.encode(), PWD_HASH_SALT, PWD_HASH_ITERATIONS)
-    )
-
-
 def hash_encode(password_and_name):
     return hashlib.pbkdf2_hmac(
         'sha256',
@@ -117,10 +121,18 @@ def hash_str_encode(data):
     return base64.b64encode(data)
 
 
+def compare_passwords(password_hash, other_password):
+    decoded_digest = base64.decode(password_hash)
+    return hmac.compare_digest(
+        password_hash,
+        hashlib.pbkdf2_hmac(PWD_HASH_ALGO, other_password.encode(), PWD_HASH_SALT, PWD_HASH_ITERATIONS)
+    )
+
+
 def generate_jwt(user_obj):
     data = {
         "username": user_obj.get('username'),
-        "password": user_obj.get('password')
+        "role": user_obj.get('role')
     }
 
     min30 = datetime.datetime.utcnow() + datetime.timedelta(minutes=30)

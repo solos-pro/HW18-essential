@@ -7,8 +7,8 @@ class UserDAO:
     def __init__(self, session):
         self.session = session
 
-    def get_one(self, user):
-        return self.session.query(User).filter(User.password == user).get_one()
+    def get_one(self, password):
+        return self.session.query(User).filter(User.password == password).get_one()
 
     def create(self, data):
         user = User(**data)

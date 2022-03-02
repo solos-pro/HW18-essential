@@ -72,20 +72,6 @@ def get_hash(password):
     )
     return base64.b64encode(result)
 
-
-# def get_hash1():
-#     password_and_name = "".join(['vasya', 'my_little_pony'])
-#     result = hashlib.pbkdf2_hmac(
-#         PWD_HASH_ALGO,
-#         password_and_name.encode('utf-8'),
-#         PWD_HASH_SALT,
-#         PWD_HASH_ITERATIONS
-#     )
-#     return base64.b64encode(result)
-#
-#
-# get_hash1()
-
 for role in raw_data.roles:
     data = Group(
         role=role["role"]
