@@ -25,6 +25,21 @@ class UserService:
 
         return generate_jwt(user)
 
+    def approve_refresh_token(self, refresh_token):
+        data = jwt.decode(jwt=refresh_token, key=SECRET, algorithms=PWD_HASH_ALGO)
+        username = data.get("username")
+
+        requested_pass = hash_str_encode(hash_encode(username))  # Hash from (pass & name)
+        '''Getting hash and then encoding to get the same string as in the bd'''
+
+        user = self.dao.get_one(requested_pass)
+        if user is None:
+            return abort(400)
+
+        return generate_jwt(user)
+
+        return self.
+
 
 
 

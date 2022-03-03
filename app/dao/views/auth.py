@@ -15,6 +15,12 @@ class AuthView(Resource):
         UserService.validate_jwt_generate(r_json)
         return "", 201
 
+    def put(self):
+        r_json = request.json
+        token = r_json.get("refresh_token")
+        tokens = UserService.approve_refresh_token(token)
+        return tokens, 201
+
 
 '''
 class Valid(Schema):
