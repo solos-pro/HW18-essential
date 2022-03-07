@@ -81,9 +81,8 @@ for role in raw_data.roles:
         db.session.add(data)
 
 for user in raw_data.users:
-    password_and_name = "".join([user["username"], user["password"]]),
+    password = user["password"]
 
-    print(password_and_name)
     data = User(
         username=user["username"],
         role_id=user["role_id"],

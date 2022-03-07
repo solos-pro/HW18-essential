@@ -2,7 +2,8 @@ from flask import request
 from flask_restx import Resource, Namespace, abort
 from marshmallow import Schema, fields
 
-from app.service.service_user import UserService
+from app.service.service_auth import AuthService
+from app.container import
 
 
 auth_ns = Namespace('auth')
@@ -12,13 +13,19 @@ auth_ns = Namespace('auth')
 class AuthView(Resource):
     def post(self):
         r_json = request.json
-        UserService.validate_jwt_generate(r_json)
-        return "", 201
+        username = r_json.get("username", None)
+        password = r_json.get("password", None)
+        if None in [username, password]:
+            return "", 400
+
+        tokens = AuthService.validate_jwt_generate(username, password)
+
+        return tokens, 201
 
     def put(self):
         r_json = request.json
         token = r_json.get("refresh_token")
-        tokens = UserService.approve_refresh_token(token)
+        tokens = AuthService.approve_refresh_token(token)
         return tokens, 201
 
 
