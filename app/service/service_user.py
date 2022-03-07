@@ -1,12 +1,4 @@
-import base64
-import hashlib
-import hmac
-import datetime
-import calendar
-import jwt
-from flask import request, abort
 from app.dao.user_dao import UserDAO
-from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
 
 
 class UserService:
@@ -20,6 +12,7 @@ class UserService:
         return self.dao.get_by_username(uid)
 
     def get_by_username(self, username):
+        print(username, "username_UserService-layer")
         return self.dao.get_one_by_username(username)
 
     def create(self, data):

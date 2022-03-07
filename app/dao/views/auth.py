@@ -5,23 +5,40 @@ from marshmallow import Schema, fields
 from app.service.service_auth import AuthService
 # from app.container import
 
+# Debugger doesn't launch
 
+'''
+from app.container import director_service
+from app.dao.model.director import DirectorSchema
+
+director_ns = Namespace('directors')
+director_schema = DirectorSchema()
+'''
 auth_ns = Namespace('auth')
 
 
 @auth_ns.route('/')
 class AuthView(Resource):
+    # def post(self):
+    #     r_json = request.json
+    #     print(r_json)
+    #     return "POST", 200
     def post(self):
         r_json = request.json
-        username = r_json.get("username", None)
+        print(r_json)
+
+        # return "POST", 200
+        username = r_json.get("username")
         password = r_json.get("password", None)
         print(username, password, "request.json")
         if None in [username, password]:
             return "", 400
 
-        tokens = AuthService.validate_jwt_generate(username, password)
+        tokens = AuthService.validate_jwt_generate(username, password, False)
 
         return tokens, 201
+        # else:
+        #     return AuthService.validate_jwt_generate(username, password, False), 201
 
     def put(self):
         r_json = request.json

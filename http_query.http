@@ -2,10 +2,19 @@ POST http://localhost:5000/auth/
 Accept: application/json
 Content-Type: application/json
 
-
 {
   "username": "vasia",
   "password": "my_little_pony"
+}
+
+###
+POST http://localhost:5000/auth/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "vasia",
+  "password": "WRONG passw"
 }
 
 ###

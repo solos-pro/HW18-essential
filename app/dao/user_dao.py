@@ -11,6 +11,7 @@ class UserDAO:
         return self.session.query(User).filter(User.id == id).get_one()
 
     def get_one_by_username(self, username):
+        print(username, "username_dao-layer")
         return self.session.query(User).filter(User.name == username).get_one()
 
     def create(self, data):

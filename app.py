@@ -6,6 +6,7 @@ from app.database import db
 from app.dao.views.genre import genre_ns
 from app.dao.views.director import director_ns
 from app.dao.views.movies import movie_ns
+from app.dao.views.auth import auth_ns
 
 
 def configure_app(application: Flask):
@@ -14,6 +15,7 @@ def configure_app(application: Flask):
     api.add_namespace(movie_ns)
     api.add_namespace(genre_ns)
     api.add_namespace(director_ns)
+    api.add_namespace(auth_ns)
 
 
 def create_app(config: Config) -> Flask:

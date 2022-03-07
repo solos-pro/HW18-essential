@@ -8,7 +8,7 @@ from app.dao.user_dao import UserDAO
 from app.service.service_genre import GenreService
 from app.service.service_movie import MovieService
 from app.service.service_director import DirectorService
-from app.service.service_auth import UserService
+from app.service.service_user import UserService
 from app.service.service_auth import AuthService
 
 

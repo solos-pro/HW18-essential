@@ -5,7 +5,6 @@ import datetime
 import calendar
 import jwt
 from flask import request, abort
-from app.dao.user_dao import UserDAO
 from app.service.service_user import UserService
 # from app.container import user_service
 from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
@@ -16,6 +15,7 @@ class AuthService:
     #     self.user_service = user_service
 
     def validate_jwt_generate(self, username, password, is_refresh=False):
+        print(username, "username_AuthService-layer")
         user = UserService.get_by_username(username)
         if user is None:
             raise abort(404)
