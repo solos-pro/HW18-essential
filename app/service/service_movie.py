@@ -10,7 +10,7 @@ class MovieService:
         return self.dao.search(search_request)
 
     def get_one(self, mid):
-        return self.dao.get_one(mid)
+        return self.dao.get_original(mid)
 
     def get_all(self):
         return self.dao.get_all()

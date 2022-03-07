@@ -3,7 +3,7 @@ from flask_restx import Resource, Namespace, abort
 from marshmallow import Schema, fields
 
 from app.service.service_auth import AuthService
-from app.container import
+# from app.container import
 
 
 auth_ns = Namespace('auth')
@@ -15,6 +15,7 @@ class AuthView(Resource):
         r_json = request.json
         username = r_json.get("username", None)
         password = r_json.get("password", None)
+        print(username, password, "request.json")
         if None in [username, password]:
             return "", 400
 

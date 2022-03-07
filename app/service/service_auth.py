@@ -7,7 +7,7 @@ import jwt
 from flask import request, abort
 from app.dao.user_dao import UserDAO
 from app.service.service_user import UserService
-from app.container import user_service
+# from app.container import user_service
 from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
 
 
@@ -16,30 +16,30 @@ class AuthService:
     #     self.user_service = user_service
 
     def validate_jwt_generate(self, username, password, is_refresh=False):
-        user = user_service.get_by_username(username)
+        user = UserService.get_by_username(username)
         if user is None:
             raise abort(404)
         if not is_refresh:
-            if not user_service.compare_passwords(user.password, password):
-                abort(400)
-
-        generate_jwt(user)
-
-
-    def approve_refresh_token(self, refresh_token):
-        data = jwt.decode(jwt=refresh_token, key=SECRET, algorithms=PWD_HASH_ALGO)
-        username = data.get("username")
-
-        requested_pass = hash_str_encode(hash_encode(username))  # Hash from (pass & name)
-        '''Getting hash and then encoding to get the same string as in the bd'''
-
-        user = self.dao.get_one(requested_pass)
-        if user is None:
-            return abort(400)
+            if not compare_passwords(user.password, password):
+                abort(401)
 
         return generate_jwt(user)
 
-        return self.
+
+    # def approve_refresh_token(self, refresh_token):
+    #     data = jwt.decode(jwt=refresh_token, key=SECRET, algorithms=PWD_HASH_ALGO)
+    #     username = data.get("username")
+    #
+    #     requested_pass = hash_str_encode(hash_encode(username))  # Hash from (pass & name)
+    #     '''Getting hash and then encoding to get the same string as in the bd'''
+    #
+    #     user = self.dao.get_one(requested_pass)
+    #     if user is None:
+    #         return abort(400)
+    #
+    #     return generate_jwt(user)
+    #
+    #     return self.
 
 
 
@@ -94,10 +94,7 @@ def hash_str_encode(data):
 
 def compare_passwords(password_hash, other_password):
     decoded_digest = base64.decode(password_hash)           # TODO: what does mean "digest"?
-    return hmac.compare_digest(
-        decoded_digest,
-        hash_encode(other_password)
-    )
+    return hmac.compare_digest(decoded_digest, hash_encode(other_password))
 
 
 def generate_jwt(user_obj):
