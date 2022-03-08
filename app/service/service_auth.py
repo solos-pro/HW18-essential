@@ -11,12 +11,11 @@ from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
 
 
 class AuthService:
-    # def __init__(self, user_service: UserService):        # TODO: Ask about it.
-    #     self.user_service = user_service
+    def __init__(self, user_service: UserService):        # TODO: Ask about it.
+        self.user_service = user_service
 
     def validate_jwt_generate(self, username, password, is_refresh=False):
-        print(username, "username_AuthService-layer")
-        user = UserService.get_by_username(username)
+        user = self.user_service.get_by_username(username)
         if user is None:
             raise abort(404)
         if not is_refresh:
@@ -24,23 +23,6 @@ class AuthService:
                 abort(401)
 
         return generate_jwt(user)
-
-
-    # def approve_refresh_token(self, refresh_token):
-    #     data = jwt.decode(jwt=refresh_token, key=SECRET, algorithms=PWD_HASH_ALGO)
-    #     username = data.get("username")
-    #
-    #     requested_pass = hash_str_encode(hash_encode(username))  # Hash from (pass & name)
-    #     '''Getting hash and then encoding to get the same string as in the bd'''
-    #
-    #     user = self.dao.get_one(requested_pass)
-    #     if user is None:
-    #         return abort(400)
-    #
-    #     return generate_jwt(user)
-    #
-    #     return self.
-
 
 
 def admin_required(func):

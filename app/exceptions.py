@@ -1,0 +1,4 @@
+
+
+
+class IncorrectData(Exception):

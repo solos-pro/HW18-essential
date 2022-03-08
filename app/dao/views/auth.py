@@ -3,7 +3,8 @@ from flask_restx import Resource, Namespace, abort
 from marshmallow import Schema, fields
 
 from app.service.service_auth import AuthService
-# from app.container import
+from app.service.service_user import UserService
+from app.container import user_service
 
 # Debugger doesn't launch
 
@@ -34,7 +35,7 @@ class AuthView(Resource):
         if None in [username, password]:
             return "", 400
 
-        tokens = AuthService.validate_jwt_generate(username, password, False)
+        tokens = user_service.validate_jwt_generate(username, password, False)
 
         return tokens, 201
         # else:

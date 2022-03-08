@@ -7,6 +7,7 @@ from app.dao.views.genre import genre_ns
 from app.dao.views.director import director_ns
 from app.dao.views.movies import movie_ns
 from app.dao.views.auth import auth_ns
+from app.dao.views.user import user_ns
 
 
 def configure_app(application: Flask):
@@ -16,6 +17,7 @@ def configure_app(application: Flask):
     api.add_namespace(genre_ns)
     api.add_namespace(director_ns)
     api.add_namespace(auth_ns)
+    api.add_namespace(user_ns)
 
 
 def create_app(config: Config) -> Flask:
@@ -33,6 +35,7 @@ if __name__ == '__main__':
     # create_data(raw_data)
     app.run()
 
+# TODO: How to launch "flask shell" in Terminal?
 """
 # основной файл приложения. здесь конфигурируется фласк, сервисы, SQLAlchemy и все остальное что требуется для приложения.
 # этот файл часто является точкой входа в приложение
