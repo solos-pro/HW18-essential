@@ -1,7 +1,10 @@
+import sqlalchemy
+from typing import Optional
+
 from app.dao.model.user import User
 
 # CRUD
-from app.exceptions import IncorrectData
+from app.exceptions import IncorrectData, DuplicateError
 
 
 class UserDAO:
@@ -12,17 +15,21 @@ class UserDAO:
     def get_one_by_id(self, id):
         return self.session.query(User).get(id)
 
-    def get_one_by_username(self, username):
-        return self.session.query(User).filter(User.name == username).one_or_none()
+    def get_one_by_username(self, username) -> Optional[User]:
+        return self.session.query(User).filter(User.username == username).one_or_none()
 
     def get_all(self):
         return self.session.query(User).all()
 
     def create(self, data):
-        user = User(**data)
-        self.session.add(user)
-        self.session.commit()
-        return user
+        try:
+            user = User(**data)
+            self.session.add(user)
+            self.session.commit()
+            return user
+        except sqlalchemy.exc.IntegrityError:       # TODO: exc doesn't exist
+            raise DuplicateError
+
 
     def update_role(self, username: str, role: str):
         if role not in self._roles:

@@ -7,7 +7,7 @@ from app.dao.views.genre import genre_ns
 from app.dao.views.director import director_ns
 from app.dao.views.movies import movie_ns
 from app.dao.views.auth import auth_ns
-from app.dao.views.user import user_ns
+from app.dao.views.users import user_ns
 
 
 def configure_app(application: Flask):

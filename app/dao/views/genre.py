@@ -3,6 +3,8 @@ from flask_restx import Resource, Namespace
 
 from app.container import genre_service
 from app.dao.model.genre import GenreSchema
+from app.tools.auth import login_required
+from app.tools.jwt_token import JwtSchema
 
 genre_ns = Namespace('genres')
 genre_schema = GenreSchema()
@@ -10,7 +12,8 @@ genre_schema = GenreSchema()
 
 @genre_ns.route('/')
 class GenresView(Resource):
-    def get(self):
+    @login_required
+    def get(self, token_data):
         all_genres = genre_service.get_all()
         return genre_schema.dump(all_genres, many=True), 200
 

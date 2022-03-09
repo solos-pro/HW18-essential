@@ -1,4 +1,7 @@
 from app.dao.user_dao import UserDAO
+from app.tools.security import get_password_hash
+from typing import Optional
+from app.dao.user_dao import User
 
 
 class UserService:
@@ -6,21 +9,26 @@ class UserService:
         self.dao = dao
 
     def search(self, user):
-        return self.dao.get_one(user)
+        return self.dao.get_one_by_id(user)
 
     def get_one(self, uid):
-        return self.dao.get_by_username(uid)
+        return self.dao.get_one_by_username(uid)
 
-    def get_by_username(self, username):
+    def get_by_username(self, username) -> Optional[User]:
         print(username, "username_UserService-layer")
         return self.dao.get_one_by_username(username)
 
-    def create(self, data):
+    def create(self, username, password, role: str="user"):
+        self.dao.create({
+            "username": username,
+            "password": get_password_hash(password),
+            "role": role
+        })
         return self.dao.create(data)
 
     def update(self, data):
         uid = data.get("id")
-        user = self.dao.get_one(uid)
+        user = self.dao.get_one_by_id(uid)
 
         user.username = data.get("username")
         user.password = data.get("password")

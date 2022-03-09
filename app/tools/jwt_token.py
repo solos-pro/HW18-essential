@@ -3,9 +3,18 @@
 from calendar import timegm
 from datetime import datetime, timedelta
 from typing import Any, Dict
+
+from marshmallow import Schema, fields
+
 from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
 from constants import ACCESS_TOKEN_EXPIRATION, REFRESH_TOKEN_EXPIRATION
 import jwt
+
+
+class JwtSchema(Schema):
+    user_id = fields.Int(required=True)
+    role = fields.Str(required=True)
+    exp = fields.Int()
 
 
 class JwtToken:

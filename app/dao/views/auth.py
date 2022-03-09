@@ -1,10 +1,13 @@
 from flask import request
 from flask_restx import Resource, Namespace, abort
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, ValidationError
+from werkzeug.exceptions import BadRequest
 
+from app.exceptions import DuplicateError
 from app.service.service_auth import AuthService
 from app.service.service_user import UserService
 from app.container import user_service
+from app.tools.jwt_token import JwtSchema, JwtToken
 
 # Debugger doesn't launch
 
@@ -18,17 +21,46 @@ director_schema = DirectorSchema()
 auth_ns = Namespace('auth')
 
 
+
+
+
+class LoginValidator(Schema):
+    username = fields.Str(required=True)
+    password = fields.Str(required=True)
+
+
+
 @auth_ns.route('/')
 class AuthView(Resource):
-    # def post(self):
-    #     r_json = request.json
-    #     print(r_json)
-    #     return "POST", 200
+
+    def post(self):
+        """ Create tokens """
+        try:
+            validated_data = LoginValidator().load(request.json)
+            user = user_service.get_by_username(validated_data['username'])
+            if not user:
+                abort(404)
+
+            token_data = JwtSchema().load({'user_id': user.id, 'role': user.role})
+
+            return JwtToken(token_data).get_tokens(), 201
+
+
+
+        except ValidationError:
+            abort(400)
+
+    def put(self):
+        """ Update refresh token """
+        ...
+
+'''
+@auth_ns.route('/')
+class AuthView(Resource):
     def post(self):
         r_json = request.json
         print(r_json)
 
-        # return "POST", 200
         username = r_json.get("username")
         password = r_json.get("password", None)
         print(username, password, "request.json")
@@ -38,8 +70,6 @@ class AuthView(Resource):
         tokens = user_service.validate_jwt_generate(username, password, False)
 
         return tokens, 201
-        # else:
-        #     return AuthService.validate_jwt_generate(username, password, False), 201
 
     def put(self):
         r_json = request.json
@@ -47,23 +77,4 @@ class AuthView(Resource):
         tokens = AuthService.approve_refresh_token(token)
         return tokens, 201
 
-
-'''
-class Valid(Schema):
-    username = fields.Str(required=True)
-    password = fields.Str(required=True)
-
-@auth_ns.route('/')
-class AuthView(Resource):
-    def post(self):
-        try:
-            validated_data = Valid().load(request.json)
-            user = UserService.get_by_name(validated_data['username'])
-            if not user:
-                abort(404)
-            token = {
-                'user_id'
-            }
-        except Exception as e:
-            abort(400, e)
 '''
