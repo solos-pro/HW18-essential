@@ -1,9 +1,7 @@
-import sqlalchemy
+# import sqlalchemy
 from typing import Optional
-
 from sqlalchemy.exc import IntegrityError
-
-from app.model.user import User
+from app.model.user import User, Group
 
 # CRUD
 from app.exceptions import IncorrectData, DuplicateError
@@ -25,13 +23,20 @@ class UserDAO:
 
     def create(self, data):
         try:
-            print(data)
+            role = data.pop('role')
+            group = Group.query.filter_by(role=role).one_or_none()
+            if not group:
+                group = Group(role=role)
+                self.session.add(group)
+                self.session.commit()
+
+            data['role_id'] = group.id
+            print(data, "DAO_create")
             user = User(**data)
             self.session.add(user)
             self.session.commit()
             return user
-        except IntegrityError as e:
-            # print(str(e))
+        except IntegrityError:
             raise DuplicateError
 
 

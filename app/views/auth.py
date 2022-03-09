@@ -55,27 +55,3 @@ class AuthView(Resource):
         """ Update refresh token """
         ...
 
-'''
-@auth_ns.route('/')
-class AuthView(Resource):
-    def post(self):
-        r_json = request.json
-        print(r_json)
-
-        username = r_json.get("username")
-        password = r_json.get("password", None)
-        print(username, password, "request.json")
-        if None in [username, password]:
-            return "", 400
-
-        tokens = user_service.validate_jwt_generate(username, password, False)
-
-        return tokens, 201
-
-    def put(self):
-        r_json = request.json
-        token = r_json.get("refresh_token")
-        tokens = AuthService.approve_refresh_token(token)
-        return tokens, 201
-
-'''
