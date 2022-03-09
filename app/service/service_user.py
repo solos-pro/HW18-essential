@@ -1,7 +1,7 @@
 from app.dao.user_dao import UserDAO
 from app.tools.security import get_password_hash
 from typing import Optional
-from app.dao.user_dao import User
+from app.dao.user_dao import User, Group
 
 
 class UserService:
@@ -24,6 +24,20 @@ class UserService:
             "password": get_password_hash(password),
             "role": role
         })
+
+    def create_alternative(self, username, password, role: str = "user"):
+        bd_role = self.dao.get_role(role)
+        if bd_role:
+            role_id = bd_role.id
+        else:
+            role_id = self.dao.create_role(role)
+        return self.dao.create({
+            "username": username,
+            "password": get_password_hash(password),
+            "role": role_id
+        })
+
+
 
     def update(self, data):
         uid = data.get("id")

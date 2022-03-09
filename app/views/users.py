@@ -37,7 +37,8 @@ class UserView(Resource):
     def post(self):
         """ Create user """
         try:
-            user_service.create(**LoginValidator().load(request.json))
+            # user_service.create(**LoginValidator().load(request.json))
+            user_service.create_alternative(**LoginValidator().load(request.json))
         except ValidationError:
             raise BadRequest
         except DuplicateError:

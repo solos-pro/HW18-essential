@@ -12,6 +12,16 @@ class UserDAO:
         self.session = session
         self._roles = {"user", "admin"}
 
+    def create_role(self, role):
+        group = Group(role=role)
+        self.session.add(group)
+        self.session.flush()
+        self.session.commit()
+        return group.id
+
+    def get_role(self, role):
+        return self.session.query(Group).filter_by(role=role).one_or_none()
+
     def get_one_by_id(self, id):
         return self.session.query(User).get(id)
 
