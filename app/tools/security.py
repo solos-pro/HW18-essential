@@ -16,11 +16,11 @@ def get_password_digest(password: str) -> bytes:
 
 
 def get_password_hash(password: str) -> str:
-    return base64.b64encode(get_password_digest(password).decode('utf-8'))
+    return base64.b64encode(get_password_digest(password)).decode('utf-8') # TODO
 
 def compare_passwords(password_hash, other_password):
     return hmac.compare_digest(
-        base64.decode(password_hash),
+        base64.b64encode(password_hash),
         get_password_digest(other_password)
     )
 

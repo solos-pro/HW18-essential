@@ -18,13 +18,12 @@ class UserService:
         print(username, "username_UserService-layer")
         return self.dao.get_one_by_username(username)
 
-    def create(self, username, password, role: str="user"):
-        self.dao.create({
+    def create(self, username, password, role: str = "user"):
+        return self.dao.create({
             "username": username,
             "password": get_password_hash(password),
             "role": role
         })
-        return self.dao.create(data)
 
     def update(self, data):
         uid = data.get("id")

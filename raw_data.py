@@ -202,7 +202,7 @@ genres = [
 users = [
     {"username": "vasya", "password": "my_little_pony", "role_id": "2"},
     {"username": "oleg", "password": "qwerty", "role_id": "2"},
-    {"username": "oleg", "password": "ssw0rd", "role_id": "1"}
+    {"username": "ivan", "password": "ssw0rd", "role_id": "1"}
 ]
 
 roles = [
@@ -212,5 +212,5 @@ roles = [
 '''
 u1 = User(username="vasya", password="my_little_pony", role="user")
 u2 = User(username="oleg", password="qwerty", role="user")
-u3 = User(username="oleg", password="P@ssw0rd", role="admin")
+u3 = User(username="ivan", password="P@ssw0rd", role="admin")
 '''

@@ -1,6 +1,8 @@
 import sqlalchemy
 from typing import Optional
 
+from sqlalchemy.exc import IntegrityError
+
 from app.model.user import User
 
 # CRUD
@@ -23,11 +25,13 @@ class UserDAO:
 
     def create(self, data):
         try:
+            print(data)
             user = User(**data)
             self.session.add(user)
             self.session.commit()
             return user
-        except sqlalchemy.exc.IntegrityError:       # TODO: exc doesn't exist
+        except IntegrityError as e:
+            # print(str(e))
             raise DuplicateError
 
 

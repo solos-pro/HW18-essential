@@ -27,13 +27,12 @@ def create_app(config: Config) -> Flask:
     return application
 
 
-if __name__ == '__main__':
 
-    app_config = Config()
-    app = create_app(app_config)
-    configure_app(app)
-    # create_data(raw_data)
-    app.run()
+app_config = Config()
+app = create_app(app_config)
+configure_app(app)
+# create_data(raw_data)
+# app.run()
 
 # TODO: How to launch "flask shell" in Terminal?
 """
