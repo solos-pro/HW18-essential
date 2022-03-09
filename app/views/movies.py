@@ -1,6 +1,6 @@
 from flask import request
 from flask_restx import Resource, Namespace
-from app.dao.model.movie import MovieSchema, MovieSchemaSearch
+from app.model.movie import MovieSchema, MovieSchemaSearch
 from app.container import movie_service
 
 movie_ns = Namespace('movies')

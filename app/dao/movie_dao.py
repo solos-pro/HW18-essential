@@ -1,4 +1,4 @@
-from app.dao.model.movie import Movie
+from app.model.movie import Movie
 
 
 # CRUD

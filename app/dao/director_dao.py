@@ -1,4 +1,4 @@
-from app.dao.model.director import Director
+from app.model.director import Director
 
 
 # CRUD

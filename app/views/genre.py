@@ -2,9 +2,8 @@ from flask import request
 from flask_restx import Resource, Namespace
 
 from app.container import genre_service
-from app.dao.model.genre import GenreSchema
+from app.model.genre import GenreSchema
 from app.tools.auth import login_required
-from app.tools.jwt_token import JwtSchema
 
 genre_ns = Namespace('genres')
 genre_schema = GenreSchema()

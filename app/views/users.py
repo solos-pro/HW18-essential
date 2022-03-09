@@ -4,11 +4,10 @@ from marshmallow import ValidationError
 from werkzeug.exceptions import BadRequest
 
 from app.container import user_service
-from app.dao.model.user import UserSchema
-from app.dao.views.auth import LoginValidator
+from app.model.user import UserSchema
+from app.views.auth import LoginValidator
 from app.exceptions import DuplicateError
 from app.tools.auth import login_required
-from app.tools.jwt_token import JwtSchema
 
 user_ns = Namespace('users')
 user_schema = UserSchema()

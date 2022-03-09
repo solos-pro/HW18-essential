@@ -1,7 +1,7 @@
 import sqlalchemy
 from typing import Optional
 
-from app.dao.model.user import User
+from app.model.user import User
 
 # CRUD
 from app.exceptions import IncorrectData, DuplicateError
