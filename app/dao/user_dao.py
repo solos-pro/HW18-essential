@@ -12,11 +12,12 @@ class UserDAO:
         self.session = session
         self._roles = {"user", "admin"}
 
-    def create_role(self, role):
+    def create_role(self, role) -> int:
         group = Group(role=role)
         self.session.add(group)
         self.session.flush()
         self.session.commit()
+        print(group.id)
         return group.id
 
     def get_role(self, role):
@@ -49,6 +50,16 @@ class UserDAO:
         except IntegrityError:
             raise DuplicateError
 
+    def create_alternative(self, data):
+        try:
+            print(data)
+            user = User(**data)
+            self.session.add(user)
+            self.session.commit()
+            print(user, "user_DAO")
+            return 0
+        except IntegrityError:
+            raise DuplicateError
 
     def update_role(self, username: str, role: str):
         if role not in self._roles:

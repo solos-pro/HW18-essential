@@ -16,24 +16,27 @@ def get_password_digest(password: str) -> bytes:
 
 
 def get_password_hash(password: str) -> str:
-    return base64.b64encode(get_password_digest(password)).decode('utf-8') # TODO
+    return base64.b64encode(get_password_digest(password)).decode('utf-8', "ignore")
 
 def compare_passwords(password_hash, other_password):
     return hmac.compare_digest(
-        base64.b64encode(password_hash),
+        base64.b64decode(password_hash),
         get_password_digest(other_password)
     )
 
 
-# hash_name=current_app.config["PWD_HASH_ALGO"]
-# salt=current_app.config["PWD_HASH_SALT"],
-# iterations=current_app.config["PWD_HASH_ITERATIONS"]
+'''
+# ------------------------- test ------------------------- #
+passW = 'f8fsa65'
+hash_passw_digest = get_password_digest(passW)
+print(hash_passw_digest)
 
+hash_passw_digest_str = get_password_hash(passW)
+print(hash_passw_digest_str)
 
-# def hash_encode(password):
-#     return hashlib.pbkdf2_hmac(
-#         'sha256',
-#         password.encode('utf-8'),  # Convert the password to bytes
-#         PWD_HASH_SALT,
-#         PWD_HASH_ITERATIONS
-#     )  # .decode("utf-8", "ignore")
+print(base64.b64decode(hash_passw_digest_str))
+
+print(compare_passwords(hash_passw_digest_str, passW))
+
+exit()
+'''

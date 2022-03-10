@@ -63,14 +63,32 @@ db.drop_all()
 db.create_all()
 
 
-def get_hash(password):
-    result = hashlib.pbkdf2_hmac(
-        PWD_HASH_ALGO,
-        password.encode('utf-8'),
-        PWD_HASH_SALT,
-        PWD_HASH_ITERATIONS
+# ---------------------------------------
+
+def get_password_digest(password: str) -> bytes:
+    return hashlib.pbkdf2_hmac(
+        hash_name=PWD_HASH_ALGO,
+        password=password.encode("utf-8"),
+        salt=PWD_HASH_SALT,
+        iterations=PWD_HASH_ITERATIONS
     )
-    return base64.b64encode(result)
+
+
+def get_password_hash(password: str) -> str:
+    return base64.b64encode(get_password_digest(password)).decode('utf-8', "ignore")
+
+
+# ---------------------------------------
+
+# def get_hash(password):
+#     result = hashlib.pbkdf2_hmac(
+#         PWD_HASH_ALGO,
+#         password.encode('utf-8'),
+#         PWD_HASH_SALT,
+#         PWD_HASH_ITERATIONS
+#     )
+#     return base64.b64encode(result)
+
 
 for role in raw_data.roles:
     data = Group(
@@ -86,12 +104,11 @@ for user in raw_data.users:
     data = User(
         username=user["username"],
         role_id=user["role_id"],
-        password=get_hash(user["password"])
+        password=get_password_hash(user["password"])
     )
 
     with db.session.begin():
         db.session.add(data)
-
 
 for director in raw_data.directors:
     d = Director(
@@ -109,7 +126,6 @@ for genre in raw_data.genres:
     with db.session.begin():
         db.session.add(d)
 
-
 for movie in raw_data.movies:
     m = Movie(
         id=movie["pk"],
@@ -125,15 +141,12 @@ for movie in raw_data.movies:
     with db.session.begin():
         db.session.add(m)
 
-
-
 # u1 = User(username="vasya", password="my_little_pony", role="user")
 # u2 = User(username="oleg", password="qwerty", role="user")
 # u3 = User(username="oleg", password="P@ssw0rd", role="admin")
 #
 # with db.session.begin():
 #     db.session.add(u1)
-
 
 
 # with db.session.begin():

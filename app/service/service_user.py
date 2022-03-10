@@ -26,16 +26,25 @@ class UserService:
         })
 
     def create_alternative(self, username, password, role: str = "user"):
-        bd_role = self.dao.get_role(role)
+        print(username, password, role)
+        bd_role = self.dao.get_role(role)       # search ID of str(role) in the database
         if bd_role:
             role_id = bd_role.id
+            print('role_id=', role_id)
         else:
-            role_id = self.dao.create_role(role)
-        return self.dao.create({
+            role_id = self.dao.create_role(role)    # create a record in the database and return ID
+        return self.dao.create_alternative({
+            "username": username,
+            "password": get_password_hash(password),
+            "role_id": role_id
+        })
+    '''
+    {
             "username": username,
             "password": get_password_hash(password),
             "role": role_id
-        })
+        }
+    '''
 
 
 
@@ -53,8 +62,6 @@ class UserService:
         uid = data.get("id")
         user = self.get_one(uid)
 
-        if "id" in data:
-            user.id = data.get("id")
         if "username" in data:
             user.username = data.get("username")
         if "password" in data:
