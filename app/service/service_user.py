@@ -15,7 +15,9 @@ class UserService:
         return self.dao.get_one_by_username(uid)
 
     def get_by_username(self, username) -> Optional[User]:
-        print(username, "username_UserService-layer")
+        user = self.dao.get_one_by_username(username)
+        print(user.id, user.role_id, "(UserService)")
+
         return self.dao.get_one_by_username(username)
 
     def create(self, username, password, role: str = "user"):
@@ -26,7 +28,10 @@ class UserService:
         })
 
     def create_alternative(self, username, password, role: str = "user"):
-        print(username, password, role)
+        duplicate_username = self.dao.get_one_by_username(username=username)
+        if duplicate_username:
+            return "DuplicateError"     # TODO: What returns?
+
         bd_role = self.dao.get_role(role)       # search ID of str(role) in the database
         if bd_role:
             role_id = bd_role.id
@@ -38,15 +43,6 @@ class UserService:
             "password": get_password_hash(password),
             "role_id": role_id
         })
-    '''
-    {
-            "username": username,
-            "password": get_password_hash(password),
-            "role": role_id
-        }
-    '''
-
-
 
     def update(self, data):
         uid = data.get("id")

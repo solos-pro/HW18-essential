@@ -13,7 +13,7 @@ import jwt
 
 class JwtSchema(Schema):
     user_id = fields.Int(required=True)
-    role = fields.Str(required=True)
+    role_id = fields.Int(required=True)
     exp = fields.Int()
 
 

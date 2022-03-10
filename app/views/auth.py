@@ -42,7 +42,8 @@ class AuthView(Resource):
             if not user:
                 abort(404)
 
-            token_data = JwtSchema().load({'user_id': user.id, 'role': user.role})
+            print(user.username, user.role, user.id)
+            token_data = JwtSchema().load({'user_id': user.id, 'role': user.role_id})
 
             return JwtToken(token_data).get_tokens(), 201
 

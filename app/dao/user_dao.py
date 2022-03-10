@@ -56,8 +56,7 @@ class UserDAO:
             user = User(**data)
             self.session.add(user)
             self.session.commit()
-            print(user, "user_DAO")
-            return 0
+            return user
         except IntegrityError:
             raise DuplicateError
 

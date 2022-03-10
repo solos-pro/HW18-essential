@@ -75,8 +75,9 @@ class UserView(Resource):
             # reg_json = request.json
             # username = reg_json['username']
             # password = reg_json['password']
-            user_service.create_alternative(**LoginValidator().load(request.json)) # create_alternative
-            # user_service.create_alternative(username, password) # create_alternative
+            user = user_service.create_alternative(**LoginValidator().load(request.json)) # create_alternative
+            print(user)
+            # return f'User {user.username} created' # TODO: Doesn't work if duplicate Error
         except ValidationError:
             raise BadRequest
         except DuplicateError:
