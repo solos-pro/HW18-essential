@@ -11,7 +11,7 @@ from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
 
 
 class AuthService:
-    def __init__(self, user_service: UserService):        # TODO: Ask about it.
+    def __init__(self, user_service: UserService):
         self.user_service = user_service
 
     def validate_jwt_generate(self, username, password, is_refresh=False):
@@ -75,7 +75,7 @@ def hash_str_encode(data):
 
 
 def compare_passwords(password_hash, other_password):
-    decoded_digest = base64.decode(password_hash)           # TODO: what does mean "digest"?
+    decoded_digest = base64.decode(password_hash)
     return hmac.compare_digest(decoded_digest, hash_encode(other_password))
 
 

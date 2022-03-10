@@ -24,5 +24,4 @@ director_service = DirectorService(dao=director_dao)
 user_dao = UserDAO(db.session)
 user_service = UserService(dao=user_dao)
 
-# TODO: move out this code to implemented.py
-# auth_service = UserService(user_dao)
+
