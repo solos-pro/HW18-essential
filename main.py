@@ -39,7 +39,7 @@ configure_app(app)
 #     configure_app(app)
 #     app.run()
 
-# TODO: How to launch "flask shell" in Terminal?
+
 
 
 

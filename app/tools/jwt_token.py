@@ -14,7 +14,7 @@ import jwt
 class JwtSchema(Schema):
     user_id = fields.Int(required=True)
     role_id = fields.Int(required=True)
-    exp = fields.Int()
+    # exp = fields.Int()                    # TODO Is it need or not?
 
 
 class JwtToken:
@@ -30,16 +30,22 @@ class JwtToken:
         return jwt.encode(self._data, SECRET, algorithm=PWD_HASH_ALGO)
 
     def _refresh_token(self) -> str:
-        return self._get_token(time_delta=timedelta(days=REFRESH_TOKEN_EXPIRATION))
+        token2 = self._get_token(time_delta=timedelta(days=REFRESH_TOKEN_EXPIRATION))
+        print(token2)
+        return token2
 
     def _access_token(self) -> str:
-        return self._get_token(time_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRATION))
+        token1 = self._get_token(time_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRATION))
+        print(token1)
+        return token1
 
     def get_tokens(self) -> Dict[str, str]:
-        return {
+        tokens = {
             "access_token": self._access_token(),
             "refresh_token": self._refresh_token()
         }
+        print(tokens)
+        return tokens
 
     @staticmethod
     def decode_token(token: str) -> Dict[str, Any]:

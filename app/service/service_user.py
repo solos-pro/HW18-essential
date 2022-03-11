@@ -1,4 +1,5 @@
 from app.dao.user_dao import UserDAO
+from app.exceptions import DuplicateError
 from app.tools.security import get_password_hash
 from typing import Optional
 from app.dao.user_dao import User, Group
@@ -30,7 +31,8 @@ class UserService:
     def create_alternative(self, username, password, role: str = "user"):
         duplicate_username = self.dao.get_one_by_username(username=username)
         if duplicate_username:
-            return "DuplicateError"     # TODO: What returns?
+            raise DuplicateError
+            # return "DuplicateError"     # TODO: What returns?
 
         bd_role = self.dao.get_role(role)       # search ID of str(role) in the database
         if bd_role:

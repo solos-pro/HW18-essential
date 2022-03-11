@@ -9,7 +9,7 @@ from app.service.service_genre import GenreService
 from app.service.service_movie import MovieService
 from app.service.service_director import DirectorService
 from app.service.service_user import UserService
-from app.service.service_auth import AuthService
+# from app.service.service_auth import AuthService
 
 
 movie_dao = MovieDAO(db.session)
@@ -23,5 +23,7 @@ director_service = DirectorService(dao=director_dao)
 
 user_dao = UserDAO(db.session)
 user_service = UserService(dao=user_dao)
+
+# auth_service = AuthService()
 
 

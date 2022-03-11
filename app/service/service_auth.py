@@ -7,6 +7,8 @@ import jwt
 from flask import request, abort
 from app.service.service_user import UserService
 # from app.container import user_service
+from app.tools.jwt_token import JwtToken
+from app.tools.security import compare_passwords
 from constants import PWD_HASH_SALT, PWD_HASH_ITERATIONS, PWD_HASH_ALGO, SECRET
 
 
@@ -60,7 +62,7 @@ def auth_required(func):
 
     return wrapper
 
-
+'''
 def hash_encode(password):
     return hashlib.pbkdf2_hmac(
         'sha256',
@@ -77,7 +79,7 @@ def hash_str_encode(data):
 def compare_passwords(password_hash, other_password):
     decoded_digest = base64.decode(password_hash)
     return hmac.compare_digest(decoded_digest, hash_encode(other_password))
-
+'''
 
 def generate_jwt(user_obj):
     data = {
