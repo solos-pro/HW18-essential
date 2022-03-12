@@ -18,9 +18,13 @@ def login_required(func):
 
         try:
             data = JwtToken.decode_token(auth_header.split("Bearer ")[-1])
-            token_data: Dict[str, Any] = JwtSchema().load(data)
+            print(data)
+            data.pop("exp", None)
+            # token_data: Dict[int, Any] = JwtSchema().load(data)
+            token_data = JwtSchema().load(data)
 
-            return func(*args, **kwargs, token_data=token_data) # user_id=data["user_id"]
+            # return func(*args, **kwargs, token_data=token_data)   # TODO: Why it doesn't work?
+            return func(*args, **kwargs)
         except (PyJWTError, ValidationError):
             abort(401)
 
@@ -38,9 +42,9 @@ def admin_required(func):
             data = JwtToken.decode_token(auth_header.split("Bearer ")[-1])
             data.pop("exp", None)
             token_data: Dict[str, Any] = JwtSchema().load(data)
-            if token_data['role'] != 'admin':
+            if token_data['role'] != '1':       # 1 - admin, 2 - user
                 abort(403)
-            return func(*args, **kwargs, token_data=token_data) # user_id=data["user_id"]
+            return func(*args, **kwargs)
         except (PyJWTError, ValidationError):
             abort(401)
 
