@@ -32,7 +32,6 @@ class UserService:
         duplicate_username = self.dao.get_one_by_username(username=username)
         if duplicate_username:
             raise DuplicateError
-            # return "DuplicateError"     # TODO: What returns?
 
         bd_role = self.dao.get_role(role)       # search ID of str(role) in the database
         if bd_role:
