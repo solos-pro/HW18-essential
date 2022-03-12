@@ -13,8 +13,8 @@ import jwt
 
 class JwtSchema(Schema):
     user_id = fields.Int(required=True)
-    role_id = fields.Int(required=True)
-    # exp = fields.Int()                    # TODO Is it need or not?
+    role = fields.Int(required=True)
+    exp = fields.Int()
 
 
 class JwtToken:
@@ -44,9 +44,8 @@ class JwtToken:
             "access_token": self._access_token(),
             "refresh_token": self._refresh_token()
         }
-        print(tokens)
         return tokens
 
     @staticmethod
     def decode_token(token: str) -> Dict[str, Any]:
-        return jwt.decode(token, SECRET, PWD_HASH_ALGO)
+        return jwt.decode(token, SECRET, algorithms=["HS256"]) # PWD_HASH_ALGO
