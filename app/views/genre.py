@@ -3,7 +3,7 @@ from flask_restx import Resource, Namespace
 
 from app.container import genre_service
 from app.model.genre import GenreSchema
-from app.tools.auth import login_required
+from app.tools.auth import login_required, admin_required
 
 genre_ns = Namespace('genres')
 genre_schema = GenreSchema()
@@ -16,6 +16,7 @@ class GenresView(Resource):
         all_genres = genre_service.get_all()
         return genre_schema.dump(all_genres, many=True), 200
 
+    @admin_required
     def post(self):
         r_json = request.json
         genre_service.create(r_json)
@@ -24,13 +25,14 @@ class GenresView(Resource):
 
 @genre_ns.route('/<int:gid>')
 class GenreView(Resource):
-
+    @login_required
     def get(self, gid):
         genre = genre_service.get_one(gid)
         if not genre:
             return "", 404
         return genre_schema.dump(genre)
 
+    @admin_required
     def put(self, gid):
         reg_json = request.json
         reg_json["id"] = gid
@@ -39,6 +41,7 @@ class GenreView(Resource):
 
         return "", 204
 
+    @admin_required
     def patch(self, gid):
         reg_json = request.json
         reg_json["id"] = gid
@@ -47,25 +50,9 @@ class GenreView(Resource):
 
         return "", 204
 
+    @admin_required
     def delete(self, gid):
         genre_service.delete(gid)
 
         return "", 204
 
-"""
-# здесь контроллеры/хендлеры/представления для обработки запросов (flask ручки). сюда импортируются сервисы из пакета service
-
-# Пример
-# from flask_restx import Resource, Namespace
-#
-# book_ns = Namespace('books')
-#
-#
-# @book_ns.route('/')
-# class BooksView(Resource):
-#     def get(self):
-#         return "", 200
-#
-#     def post(self):
-#         return "", 201
-"""
