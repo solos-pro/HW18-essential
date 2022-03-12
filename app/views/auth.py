@@ -19,24 +19,34 @@ class LoginValidatorShort(Schema):
     password = fields.Str(required=True)
 
 
+class JwtSchema(Schema):
+    user_id = fields.Int(required=True)
+    role_id = fields.Int(required=True)
+    # exp = fields.Int()                    # TODO Is it need or not?
+
+
 @auth_ns.route('/')
 class AuthView(Resource):
     def post(self):
         """Create token"""
-        try:
-            validated_data = LoginValidatorShort().load(request.json)
-            user = user_service.get_by_username(validated_data['username'])
-            if not user:
-                print("None user")
-                abort(404)
-            print('user_id', user.id, 'role_id', user.role_id)
-            token_data = jwt.JwtSchema().load({'user_id': user.id, 'role': user.role_id})
-            print("token_data: ", token_data)
-            return jwt.JwtToken(token_data).get_tokens(), 201
+        # try:
+        validated_data = LoginValidatorShort().load(request.json)
+        print(validated_data, " - validated_data")
+        user = user_service.get_by_username(validated_data['username'])
+        if not user:
+            print("None user")
+            abort(404)
+        print('user_id', user.id, 'role_id', user.role_id)
 
-        except ValidationError:
-            print("Validation Err")
-            abort(400)
+        token_data = {'user_id': user.id, 'role': user.role_id}
+        print("token_data: ", token_data)
+
+        return jwt.JwtToken(token_data).get_tokens(), 201
+        # exit()
+
+        # except ValidationError:
+        #     print("Validation Err")
+        #     abort(400)
 
     def put(self):
         """Update token"""
